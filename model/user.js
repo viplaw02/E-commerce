@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const bcrypt= require('bcrypt');
+const{HttpStatusCode} = require('axios')
 const UserSchema = new mongoose.Schema({
     full_name:{
         type:String,
@@ -18,8 +20,17 @@ const UserSchema = new mongoose.Schema({
         required:true 
     }
 },{timestamp:true})
- const salt =  10;
- UserSchema.pre('save',(next)=>{
-    
- })
+ const saltRound =  10;
+ UserSchema.pre('save',async (next)=>{
+  try {
+    const password  = await bcrypt.hash(this.password,saltRound)
+    next();
+  } catch (error) {
+    console.log(error.message);
+    res.status(HttpStatusCode.BadRequest).json({
+      success:false,
+      message:"error while encrypting password"
+    })
+  }
+ });
 const user = mongoose.model('user',UserSchema)
