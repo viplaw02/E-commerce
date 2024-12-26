@@ -11,7 +11,6 @@ exports.SendMail = async (email,title,otp)=>{
         pass:process.env.MAIL_PASS,
         })
      })
- 
 
  } catch (error) {
     
