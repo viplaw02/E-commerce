@@ -28,7 +28,14 @@ const OtpSchema = new mongoose.Schema({
     throw error;
   }
  }
- OtpSchema.pre('save',)
+ OtpSchema.pre('save',async (next)=>{
+    try {
+        await verification(this.email,this.otp);
+    } catch (error) {
+        console.log(error.message);
+        next();
+    }
+ })
 const otp = mongoose.model('userotp',OtpSchema)
 module.exports ={
     otp
