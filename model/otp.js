@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const {SendMail} = require('../util/SendEmail')
 const OtpSchema = new mongoose.Schema({
     email:{
         type:String,
@@ -17,6 +18,17 @@ const OtpSchema = new mongoose.Schema({
     },
     
 })
+ verification = async (email,otp)=>{
+  try {
+     const response = await SendMail(email,"Verification from viplaw",otp);
+     console.log("Mail Sent",response);
+     
+  } catch (error) {
+    console.log("Getting an error while generating ",error.email);
+    throw error;
+  }
+ }
+ OtpSchema.pre('save',)
 const otp = mongoose.model('userotp',OtpSchema)
 module.exports ={
     otp
