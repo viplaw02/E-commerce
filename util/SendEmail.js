@@ -2,7 +2,7 @@ const  nodemailer = require('nodemailer')
 const {otp} = require('../model/otp');
  const {HttpStatusCode}= require('axios')
  require('dotenv').config();
-exports.SendMail = async (email,title,body)=>{
+exports.SendMail = async (email,title,otp)=>{
  try {
      const Transporter = nodemailer.createTransport({
         host:process.env.MAIL_HOST,
