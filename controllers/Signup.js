@@ -14,7 +14,7 @@ exports.SendOtp = async (req, res) => {
             });
         }
 
-        console.log("Checking email existence:", email);
+       
 
         // Check if OTP already sent
         const IsFoundEmail = await Otp.findOne({ email });
@@ -25,7 +25,7 @@ exports.SendOtp = async (req, res) => {
             });
         }
 
-        console.log("Generating unique OTP...");
+       
         const GenerateOtp = () => crypto.randomInt(10000, 100000);
 
         let UniqueOtp = false;
@@ -44,10 +44,9 @@ exports.SendOtp = async (req, res) => {
         const OtpPayload = new Otp({ email, otp: emailOtp });
         await OtpPayload.save();
 
-        console.log(`OTP ${emailOtp} generated for email ${email}`);
+        
 
-        // Placeholder for email sending (e.g., using nodemailer)
-        // await sendOtpEmail(email, emailOtp);
+     
 
         return res.status(HttpStatusCode.Ok).json({
             success: true,
@@ -61,3 +60,4 @@ exports.SendOtp = async (req, res) => {
         });
     }
 };
+//........verifyOtp........................
