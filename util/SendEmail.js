@@ -4,14 +4,13 @@ const {otp} = require('../model/otp');
  require('dotenv').config();
 exports.SendMail = async (email,title,otp)=>{
  try {
-     const Transporter = nodemailer.createTransport({
+     const transporter = nodemailer.createTransport({
         host:process.env.MAIL_HOST,
-        port:process.env.MAIL_PORT,
         secure:true,
-        auth:({
+        auth:{
         user:process.env.MAIL_USER,
         pass:process.env.MAIL_PASS,
-        })
+        }
      })
      const htmlbody=`
      <!DOCTYPE html>
@@ -22,13 +21,9 @@ exports.SendMail = async (email,title,otp)=>{
     <title>OTPMODEL</title>
     <style>
  .container{
-    display: flex;
     font-family: math;
-    flex-direction: column;
-    align-items: center;
     border: 1px solid;
-    width: 61vh;
-    margin-left: 70vh;
+    text-align: center;
 
  }
  .otp{
@@ -50,7 +45,7 @@ exports.SendMail = async (email,title,otp)=>{
 </body>
 </html>
      `
-     const Sendmail = await Transporter.sendMail({
+     const Sendmail = await transporter.sendMail({
         from:process.env.MAIL_USER,
         to:email,
         subject:`${title}`,
