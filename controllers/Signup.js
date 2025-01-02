@@ -2,7 +2,7 @@ const {User} = require('../model/user');
 const {otp} = require('../model/otp');
 const crypto = require('crypto')
 const {HttpStatusCode}=require('axios')
-exports.SendOtp =(req,res)=>{
+exports.SendOtp = async (req,res)=>{
     try {
         const {email} = req.body;
          if(!email){
@@ -31,9 +31,22 @@ exports.SendOtp =(req,res)=>{
             UniqueOtp=true;
         }
        }
-     
+     const OtpPayload = new otp({
+        email,
+        otp:emailOtp
+     });
+     await OtpPayload.save();
+     return res.status(HttpStatusCode.Ok).json({
+        success:true,
+        message:`otp successfully sent on ${email}`
+     })
 
     } catch (error) {
+        console.log(error.message);
+        return res.status(HttpStatusCode.InternalServerError).json({
+            success:false,
+            message:`Internal server error ${error.message}`
+        })
         
     }
 }
